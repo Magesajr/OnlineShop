@@ -1,0 +1,18 @@
+{%from  'bootstrap/form.html' import render_form as R%}
+{%from  'bootstrap/form.html' import render_field as r%}
+<style>
+    .container { max-width: 700px; margin: auto; }
+    .card { padding: 20px; border: 1px solid #ddd; margin-top: 20px; border-radius: 10px; } 
+</style>
+<html>
+<title>Payments</title>
+{{bootstrap.load_css()}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+<div class="d-flex justify-content-center">
+    <div class="card animate__animated animate__zoomIn mt-3 col-4">
+        {{R(form)}}
+    </div>
+</div>
+{{bootstrap.load_js()}}
+</html>
