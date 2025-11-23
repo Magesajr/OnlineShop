@@ -2,6 +2,7 @@ import requests as r
 import secrets as s
 from flask_mail import Message
 
+
 #test creditials 
 PESAPAL_AUTH_DEMO='https://cybqa.pesapal.com/pesapalv3/api/Auth/RequestToken'
 PESAPAL_REG_DEMO='https://cybqa.pesapal.com/pesapalv3/api/URLSetup/RegisterIPN'
@@ -42,18 +43,18 @@ def payment_form(email,phone,amount:float,desc,city,curr:str):
         "cancellation_url": "http://localhost:5000/cancel",
         "redirect_mode": "",
         "notification_id": f'{IPN_DEMO}',
-        "branch": "Magesa Istore - HQ",
+        "branch": "PESAPAL - HQ",
         "billing_address": {
             "email_address":f"{email}",
             "phone_number": f"{phone}",
             "country_code":"TZ",
-            "first_name":"Samson",
-            "middle_name": "magesa",
-            "last_name": "jounior",
-            "line_1": "ReedemHope LTD",
+            "first_name":"",
+            "middle_name": "",
+            "last_name": "",
+            "line_1": "PESAPAL LIMITED",
             "line_2": "",
             "city": city,
-            "state": "Dar-es-salaam",
+            "state": "",
             "postal_code": "2040",
             "zip_code": "" },
             "account_number":""}  
