@@ -1,0 +1,31 @@
+{%extends 'base.html'%}
+{%from  'bootstrap/form.html' import render_form as R%}
+{%block content%}
+<div class="container">  
+    <h1 class="ml-3" 
+    style="font-style:normal;
+            color: blue;
+            font-weight: bolder;
+            align-items: center;"> 
+        REGISTER PAGE</h1>   
+{% if form %}
+    <div>
+        <div class="col-md-6">
+            {{R(form,button_map={'submit':'outline-warning mt-3 mb-2'})}}
+        </div>                                  
+    </div>
+{%endif%}
+   <div class="border-bottom pt-2">
+    <small class="text-muted">Already have Account?
+        <a class="ml-5"  href="{{url_for('.token')}}">Sign In</a>
+    </small></div> 
+</div>
+
+<div class="mt-3" style=
+"color: blue;font-size:larger; 
+font-weight: bold; font-style: oblique;">
+    {{moment(date).format('LLL')}}
+</div>
+
+
+{%endblock content%}

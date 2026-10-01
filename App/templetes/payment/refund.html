@@ -1,0 +1,26 @@
+{%extends 'base.html'%}
+{%from  'bootstrap/form.html' import render_form as R%}
+{%block content%}
+
+<style>
+    .container { max-width: 700px; margin: auto; }
+    .card { padding: 20px; border: 1px solid #ddd; margin-top: 20px; border-radius: 10px; } 
+    </style>
+<div class="container"> 
+    <h1 class="ml-3" 
+    style="font-style:normal;
+            color: blue;
+            font-weight: bolder;
+            align-items: center;"> 
+        PAYMENT PAGE</h1>   
+    <div class="col-md-6"> 
+        <div class=" card animate__animated animate__zoomIn">
+            {{R(form,button_map={'submit':'outline-warning mt-3 mb-2'})}}         
+        </div>                                
+    </div>
+   <div class="border-bottom pt-2" style="color: 
+   blue;font-size:larger; 
+   font-weight: bold; font-style: oblique;">
+    {{moment(date).format('LLL')}}
+</div>
+{%endblock content%}

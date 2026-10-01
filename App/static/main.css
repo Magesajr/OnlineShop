@@ -1,0 +1,13 @@
+
+
+.body{
+ /* min-height: 200vh; */
+ display:inline-flex;
+ min-width:200vh;
+ background-image: url('/home/magesajr/JAVA/App/static/IMG-20241125-WA0003.jpg');
+}
+
+main{
+    /* height: 200vh; */
+    display:flex;
+}

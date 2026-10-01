@@ -1,0 +1,11 @@
+{%extends 'base.html'%}
+{%block content%}
+<div class="ml-2 mt-3" style="color: black;">
+    <h1>payment_method:{{param['payment_method']}}</h1>
+    <h1>amount:{{param['amount']}}</h1>
+    <h1>payment_account:{{param['payment_account']}}</h1>
+    <h1>payment_time:{{param['created_date']}}</h1>
+    <h1>payment_status:{{param['message']}}</h1>
+    <h1>payment_status_detail:{{param['payment_status_description']}}</h1>
+</div> 
+{%endblock content%}

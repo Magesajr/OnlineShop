@@ -1,0 +1,9 @@
+*.sqlite
+/__pycache__
+/instance
+*.pyc
+*.mako
+*.swp
+*.vscode/
+/App/UPLOAD/
+/App/testing.py
