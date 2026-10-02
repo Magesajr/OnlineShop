@@ -1,4 +1,4 @@
-from flask import (flash,
+from flask import (flash,abort,
 redirect,render_template,current_app,url_for,request)
 from ..Ceo import Ceo
 from .forms import ProductForm,UpdateForm
@@ -6,25 +6,23 @@ from datetime import datetime
 from flask_login import current_user,login_required
 from ..models import User,Order,Product
 from App import db
+from .util import save_img,update_img,clean_bucket
 from App.decorators import Ceo_required
-import os
 from werkzeug.utils import secure_filename as sf
-import secrets
 
 
-def save_img(img,folder):
-    token=secrets.token_hex(4)
-    _, f_ext=os.path.splitext(img.filename)
-    img_name=token+f_ext
-    img_path=os.path.join(folder,img_name)
-    img.save(img_path)
-    return img_name
+
 
 Date=datetime.utcnow()
 
-@Ceo.route('/addproduct',methods=['POST','GET'])
-@Ceo_required
+
+@Ceo.before_request
 @login_required
+@Ceo_required
+def before_request():
+    pass
+
+@Ceo.route('/addproduct',methods=['POST','GET'])
 def add_product():
     form=ProductForm()
     if form.validate_on_submit():
@@ -33,29 +31,77 @@ def add_product():
         specs=form.specs.data
         img=form.img.data
         if img:
-            filename=save_img(img,current_app.config['UPLOAD_FOLDER'])        
+            filename=save_img(img)        
         product=Product(name=name,specs=specs,img=filename,price=price)
         db.session.add(product)
         db.session.commit()
-        flash('Product added','info')
-    return  render_template('product/add.html',form=form,date=Date)
+        flash(f'Product {product.name} added Now','info')
+    return  render_template('product/add.html',form=form,date=Date,title='Add-Product')
 
 
 @Ceo.route('/update/<int:id>',methods=['POST','GET'])
-@login_required
 def update_product(id):
+    flash('Product update Page','Info')
     product=Product.query.filter_by(id=id).first_or_404()
-    form=UpdateForm()
+    form=ProductForm()
     name=form.name.data
     specs=form.specs.data
-    img=form.img.data
+    new_img=form.img.data
     price=form.price.data
     if form.validate_on_submit():
-        product=Product(name=name,specs=specs,img=img,price=price)
+        product.name=name
+        product.specs=specs
+        product.img=save_img(new_img)
+        product.price=price
         db.session.commit()
-        flash('Product updated','success')
+        flash('Product is successfully updated','success')
+        return redirect(url_for('main.home'))
     form.name.data=product.name
     form.specs.data=product.specs
     form.price.data=product.price
-    return  render_template('product/update.html',form=form,date=Date)
+    form.img.data=product.img
+    return  render_template('product/add.html',form=form,date=Date,title='Edit-Product')
+
+
+@Ceo.route('/clear/bucket',methods=['POST','GET'])
+def clear_bucket():
+    clean_bucket()
+    flash('Image Storage have Been Cleared','danger')
+    return redirect(url_for('main.home'))
+
+
+@Ceo.route('/payments')
+def users_payments():
+    page=request.args.get('page',type=int)
+    pagin=Order.query.filter_by(paid=True).order_by(Order.date_ordered.desc()).\
+    paginate(page=page,per_page=10)
+    order=pagin.items
+    return render_template('payment/init.html',pagin=pagin,
+                           order=order,date=Date,title='Paid-Orders')
+
+@Ceo.route('/Admin')
+def Admin_page():
+    users=User.query.count()
+    orders=Order.query.count()
+    payments=Order.query.filter_by(paid=True).count()
+    return render_template('main/admin.html',users=users,orders=orders,pay=payments,
+                           title='Admin-Panel')
+
+
+@Ceo.route('/users',methods=['GET'])
+def users():
+    page=request.args.get('page',type=int)
+    pagin=User.query.paginate(page=page,per_page=10)
+    users=pagin.items
+    return render_template('main/users.html',pagin=pagin,
+                           users=users,title='All-Users')
+
+@Ceo.route('/Allorders')
+def orders():
+    page=request.args.get('page',type=int)
+    pagin=Order.query.order_by(Order.date_ordered.desc()).\
+    paginate(page=page,per_page=10)
+    orders=pagin.items
+    return render_template('main/orders.html',pagin=pagin,
+                           orders=orders,title='All-Orders')
 

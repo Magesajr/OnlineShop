@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container py-4">
+        <h2 class="mb-4">Admin Panel</h2>
+
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <h6 class="text-muted">Users</h6>
+                        <h2>{{ users }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <h6 class="text-muted">Orders</h6>
+                        <h2>{{ orders }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-center shadow-sm">
+                    <div class="card-body">
+                        <h6 class="text-muted">Paid Orders</h6>
+                        <h2>{{ pay }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
