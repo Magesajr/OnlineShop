@@ -114,12 +114,12 @@
 
                     <td>
                         <span class="badge bg-danger rounded-pill px-3 py-2">
-                            Sold
+                            {{product.orders.count()}} people ordered
                         </span>
                     </td>
 
                     <td>
-                        {%if not current_user.is_CEO() %}
+                        {%if not current_user.is_CEO()  %}
 
                             <a
                                 class="btn btn-primary disabled"

@@ -48,7 +48,7 @@ def token():
     t=session['login_token']['pin']
     if form.validate_on_submit():
         email=form.email.data
-        token_email('LOGIN TOKEN',t,current_app.config['MAIL_USERNAME'],email)
+        #token_email('LOGIN TOKEN',t,current_app.config['MAIL_USERNAME'],email)
         return redirect(url_for('.login'))
     return render_template('main/token.html',form=form,date=Date,title='Login-Token')
 
@@ -56,6 +56,7 @@ def token():
 @main.route('/login',methods=['POST','GET'])
 def login():
     form=LoginForm()
+    Token=session['login_token']['pin']
     if current_user.is_authenticated:
         flash('You Have Already Logged In','warning')
         return redirect(url_for('.home'))
@@ -66,6 +67,7 @@ def login():
         next=request.args.get('Next')
         user=User.query.filter_by(email=email).first()
         session.permanent=True
+        
         if user and digest_token(token,session['login_token']['token'],180):
             login_user(user,remember,
                        duration=current_app.config['REMEMBER_COOKIE'])
@@ -75,14 +77,14 @@ def login():
         else:
             flash('Invalid or Expired token send new one','danger')
             return redirect(url_for('.token'))
-    return render_template('login.html',form=form,date=Date,title='Login-Page')
+    return render_template('login.html',form=form,token=Token,date=Date,title='Login-Page')
 
 
 @main.route('/logout')
 def logout():
     logout_user()
     flash('you have logout','danger')
-    return render_template('base.html',title='Sign-Out')
+    return redirect(url_for('.token'))
 
 
 

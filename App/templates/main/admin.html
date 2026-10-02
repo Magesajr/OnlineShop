@@ -1,5 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'base.html'%}
 {% block content %}
+<style>
+    .card{
+        background-color:green;
+    }
+</style>
     <div class="container py-4">
         <h2 class="mb-4">Admin Panel</h2>
 
@@ -31,5 +36,6 @@
                 </div>
             </div>
         </div>
+        <a class="btn btn-outline-success mt-3" href="{{url_for('Ceo.add_product')}}">add product</a>
     </div>
 {% endblock content %}
