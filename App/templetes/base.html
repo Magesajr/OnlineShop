@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-{%from 'bootstrap/utils.html' import render_messages as m %}
-{%from 'bootstrap/utils.html' import render_icon as r%}
+{%from 'bootstrap5/utils.html' import render_messages as m %}
+{%from 'bootstrap5/utils.html' import render_icon as r%}
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  {% if Title%}<title>{{Title}}</title>{%else%} <title>Online</title>{%endif%}
+  {% if title%}<title>{{title}}</title>{%else%} <title>OnlineShop</title>{%endif%}
   {{bootstrap.load_css()}}
     <style>
       body{
@@ -13,7 +13,7 @@
         min-width:100vh;
         background-size:cover;
         background-repeat: no-repeat;
-        background-image:url("{{url_for('static',filename='img.jpg')}}");
+        background-image:url("{{url_for('static',filename='background3.jpg')}}");
         /* background-image:url("https://www.google.com/imgres?q=phone%20iphone13&imgurl=https%3A%2F%2Fichef.bbci.co.uk%2Face%2Fws%2F640%2Fcpsprodpb%2F17DDC%2Fproduction%2F_120565779_iphone13colours.png.webp&imgrefurl=https%3A%2F%2Fwww.bbc.com%2Fpidgin%2Fworld-58572011&docid=YC6f-qHY4Zm-lM&tbnid=MmX52aVUVK47RM&vet=12ahUKEwi4sfvHpM2MAxWIUqQEHcWCJukQM3oECFoQAA..i&w=640&h=360&hcb=2&ved=2ahUKEwi4sfvHpM2MAxWIUqQEHcWCJukQM3oECFoQAA"); */
       }
     </style>
@@ -23,28 +23,28 @@
    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-secondary" style="width: 230px;">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
       <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-      <span class="fs-4">MAGESA STORE</span>
+      <span class="fs-4">B.A.E.S.O STORE</span>
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
       <li class="nav-item">
-        <a href="{{url_for('main.home')}}" class="nav-link text-white" aria-current="page">
+        <a href="{{url_for('main.welcome_page')}}" class="nav-link text-white" aria-current="page">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="{{url_for('main.home')}}"/>{{r('house-door')}}</svg>
           Home
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link text-white">
+        <a href="{{url_for('main.profile')}}" class="nav-link text-white">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/>{{r('person-badge-fill')}}</svg>
           Profile
         </a>
       </li>
-      <li>
+      <!-- <li>
         <a href="{{url_for('payment.orders')}}" class="nav-link text-white">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/>{{r('cart-plus')}}</svg>
           Orders
         </a>
-      </li>
+      </li> -->
       <li>
         <a href="{{url_for('main.home')}}" class="nav-link text-white">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#"/>{{r('phone-flip')}}</svg>
@@ -52,13 +52,13 @@
         </a>
       </li>
       <li>
-        <a href="{{url_for('payment.user_payments')}}" class="nav-link text-white">
+        <a href="{{url_for('Ceo.users_payments')}}" class="nav-link text-white">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/>{{r('cash')}}</svg>
           Payments
         </a>
       </li>
       <li>
-        <a href="{{url_for('Ceo.add_product')}}" class="nav-link text-white">
+        <a href="{{url_for('Ceo.Admin_page')}}" class="nav-link text-white">
           <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/>{{r('person-circle')}}</svg>
           Admin page
         </a>
@@ -67,18 +67,16 @@
     <hr>
     <div class="dropdown">
       <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-        <img  src="https://github.com/mdo.png" alt="" width="80" height="80" class="rounded-circle me-2">
-        <strong>mdo</strong>
+        <img  src="{{url_for('static',filename='background3.jpg')}}" alt="" width="80" height="80" class="rounded-circle me-2">
+        <strong>SignOut</strong>
       </a>
       <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
         {%if current_user.is_authenticated%}
-          <li><a class="dropdown-item" href="#">Settings</a></li>
           <li><a class="dropdown-item" href="#">Profile</a></li>
           <li><hr class="dropdown-divider"></li>
           <li><a class="dropdown-item" href="{{url_for('main.logout')}}">Sign out</a></li>
         {%else%}
           <li><a class="dropdown-item" href="{{url_for('main.token')}}">Sign In</a></li>
-          <li><a class="dropdown-item" href="#">Profile</a></li>
         {%endif%}
         </ul>
       </div>

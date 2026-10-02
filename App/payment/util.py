@@ -1,5 +1,5 @@
 import requests as r
-import json
+import json,base64,uuid,hashlib,hmac
 from datetime import datetime
 import secrets as s
 from flask_mail import Message
@@ -64,7 +64,7 @@ def refund_form(code:str,amount:float,username:str,remarks:str):
     return refund_header
 
 
-def subimit_order(customer_details,headers):
+def submit_order(customer_details,headers):
     List=r.post(c.PESAPAL_SUBMIT_DEMO,headers=headers,json=customer_details).json()
     return List
 
@@ -84,16 +84,63 @@ def refund(refund_details):
     return refund['message']
 
 
-subject='<<--Payment Recipt-->>'
+
+#LIPAHURU LOGIC
+def lipa_token():
+    auth={
+    'grant_type':'client_credentials',
+    'client_id':c.CLIENT_ID,
+    'client_secret':c.CLIENT_SECRET}
+    token=r.post(c.LIPA_BASE+c.LIPA_TOKEN,data=auth).json()
+    return token['access_token']
+
+
+
+def X_sgn(body,method,url):
+    json_body=json.dumps(body,separators=(',',':'))
+    content_sha256=base64.b64encode(
+        hashlib.sha256(json_body.encode('utf-8')).digest()).decode('utf-8')
+    if method=='get':
+        content_sha256=base64.b64encode(
+            hashlib.sha256(''.encode('utf-8')).digest()).decode('utf-8')
+    msg=f'''{method.upper()}
+{url}
+{content_sha256}'''
+    signature=base64.b64encode(
+        hmac.new(
+            c.CLIENT_SECRET.encode('utf-8'),msg.encode('utf-8'),hashlib.sha256
+        ).digest()
+    ).decode('utf-8')
+    return signature
+
+
+def lipa_collect(headers,body):
+    json_body=json.dumps(body,separators=(',',':'))
+    res=r.post(c.LIPA_BASE+c.LIPA_COLLECT,data=json_body,headers=headers).json()
+    return res
+    
+
+def lipa_withdraw(headers,body):
+    json_body=json.dumps(body,separators=(',',':'))
+    res=r.post(c.LIPA_BASE+c.LIPA_MINE,data=json_body,headers=headers).json()
+    return res
+
+
+def lipa_status(headers,id):
+    res=r.get(c.LIPA_BASE+c.LIPA_STATUS+id,headers=headers).json()
+    return res
+
+
+subject='<<--Payment Receipt-->>'
 def payment_email(file,data,to,subject=subject,**kwargs):
-    msg=Message(subject,recipients=[to],sender=current_app.config['APP_ADMIN'])
+    msg=Message(subject,recipients=[to],sender=current_app.config['MAIL_USERNAME'])
     msg.body='Payment Details'
     msg.html=render_template('mails/payment_email.html',**kwargs)
     msg.attach(file,data=data,content_type='image/png')
     mail.send(msg)
 
 def refund_email(subject,to,**kwargs):
-    msg=Message(subject,recipients=[to],sender=current_app.config['APP_ADMIN'])
+    msg=Message(subject,recipients=[to],sender=current_app.config['MAIL_USERNAME'])
     msg.body='The following are you\'re refund details'
     msg.html=render_template('mails/refund.html',**kwargs)
     mail.send(msg)

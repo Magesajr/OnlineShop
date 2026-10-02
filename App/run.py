@@ -6,7 +6,7 @@ import os,click,sys
 
 base=os.path.abspath(os.path.dirname(__name__))
 
-app=create_app('default')
+app=create_app('production')
 migrate=Migrate(app,db)
 
 

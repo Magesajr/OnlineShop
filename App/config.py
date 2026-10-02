@@ -1,5 +1,7 @@
 import os
-import secrets
+from datetime import timedelta
+
+
 base=os.path.abspath(os.path.dirname(__file__))
 
 class config:
@@ -23,18 +25,37 @@ class config:
 
     CONSUMER_KEY_DEMO='ngW+UEcnDhltUc5fxPfrCD987xMh3Lx8'
     CONSUMER_SECRET_DEMO='q27RChYs5UkypdcNYKzuUw460Dg='
+
+
+    #LIPAHURU  LIVE CREDENTIALS
+    LIPA_BASE='https://pgw.lipahuru.co.tz'
+    LIPA_TOKEN='/oauth/token'
+    LIPA_COLLECT='/api/v1/payments/collections/push'
+    LIPA_STATUS=f'/api/v1/payments/'
+    LIPA_MINE='/api/v1/payments/disbursements'
+    LIPA_QUERY='/api/v1/payments/'
+    LIPA_BALANCE='api/v1/wallets/YAS'
+    CLIENT_ID= os.environ.get('CLIENT_ID')
+    CLIENT_SECRET=os.environ.get('CLIENT_SECRET') 
+    PAYMENT_FEE=1000
     
-    
+    #auths
     SECRET_KEY=os.environ.get('SECRET_KEY')
     MAIL_SERVER='smtp.googlemail.com'
     MAIL_PORT=587
     MAIL_USE_TLS=True
     MAIL_USERNAME=os.environ.get('USERNAME')
-    APP_ADMIN=os.environ.get('USERNAME')
+    APP_ADMINS=os.environ.get('APP_ADMINS','').split(':')
     MAIL_PASSWORD=os.environ.get('PASSWORD')
     CONSUMER_KEY=os.environ.get('Consumer_Key')
     CONSUMER_SECRET=os.environ.get('Consumer_Secret')
-    
+    SUPABASE_URL='https://xypiifoukifsdpuhcguw.supabase.co'
+    SUPABASE_KEY = os.environ.get('SUPA_KEY')
+    #sessions
+    PERMANENT_SESSION_LIFETIME=timedelta(days=1)
+    SESSION_REFRESH_EACH_REQUEST=False
+    REMEMBER_COOKIE=timedelta(days=1)
+
     @staticmethod
     def init_app(app):
         pass
@@ -50,6 +71,7 @@ class Development(config):
     database=os.path.join(base,Database+'/database.sqlite')
     SQLALCHEMY_DATABASE_URI='sqlite:///' + database
     UPLOAD_FOLDER=Upload
+
 
 class Production(config):
     SQLALCHEMY_DATABASE_URI=os.environ.get('SUPABASE_POSTGRES')
