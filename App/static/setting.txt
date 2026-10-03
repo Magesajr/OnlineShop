@@ -1,0 +1,124 @@
+{
+    "workbench.colorTheme": "Vibrant_Ink",
+    "editor.fontSize": 20,
+    "editor.fontFamily": "Ubuntu Sans Mono",
+    "editor.fontWeight": "bold",
+
+    "terminal.integrated.cursorStyle": "block",
+    "terminal.integrated.fontSize": 26,
+    "terminal.integrated.fontFamily": "Ubuntu Sans Mono",
+    "workbench.iconTheme": "ayu",
+    "python.languageServer": "Pylance",
+    "workbench.startupEditor": "none",
+
+
+    "files.watcherExclude":{
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/.hg/store/**": true,
+    },
+    "python.analysis.packageIndexDepths": [
+
+
+        {
+            "name": "sklearn",
+            "depth": 2
+        },
+        {
+            "name": "matplotlib",
+            "depth": 2
+        },
+        {
+            "name": "scipy",
+            "depth": 2
+        },
+        {
+            "name": "django",
+            "depth": 2
+        },
+        {
+            "name": "flask",
+            "depth": 2
+        },
+        {
+            "name": "fastapi",
+            "depth": 2
+        },
+        {
+            "name": "cuda",
+            "depth": 3,
+            "includeAllSymbols": true
+        }
+    ]
+,
+// "editor.semanticHighlighting.enabled":true ,
+"editor.tokenColorCustomizations": 
+    {"[Vibrant_Ink]": {"comments": "#ff00ea",
+      "functions": "#0f8fca",
+      "variables": "#f2f21c",
+      "keywords": "#fa1414",
+      "types":"#15ff00",
+      "numbers": "#70c5ef",
+       "strings": "#15ff00",
+
+       "textMateRules":[
+        {
+            "scope":[
+                "variable.other.property",
+                "variable.object.property",
+                "meta.attribute.python",
+                "support.variable.property"
+            ],
+            "settings": {
+                "foreground": "#f6f605",
+                "fontStyle": "bold"
+            }
+        },
+        {
+
+            "scope": [
+                // HTML tags
+                "entity.name.tag.html"
+            ],
+            "settings": {
+                "foreground": "#ff3c00" // Change this to the color you desire
+            }
+        },
+        {
+            "scope": [
+                // HTML attributes
+                "entity.other.attribute-name.html"
+            ],
+            "settings": {
+                "foreground": "#fbff18" // Change this to the color you desire
+            }
+        },
+        {
+            "scope": [
+                // HTML comments
+                "comment.block.html"
+            ],
+            "settings": {
+                "foreground": "#ff00f2" // Change this to the color you desire
+            }
+        },
+        {
+            "scope": [
+                // HTML text content
+                "text.html"
+            ],
+            "settings": {
+                "foreground": "#fafafa" // Change this to the color you desire
+            }
+        }
+    ] 
+}
+},
+"workbench.editorAssociations": {
+    "*.sqlite": "default"
+},
+"workbench.settings.applyToAllProfiles": [],
+"json.schemas": [
+    
+],
+}
