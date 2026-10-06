@@ -4,7 +4,6 @@ import os
 from flask import jsonify
 from App.config import config as c
 
-
 URL:str=c.SUPABASE_URL
 KEY:str=c.SUPABASE_KEY
 supabase : Client= create_client(URL,KEY)

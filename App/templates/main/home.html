@@ -33,7 +33,7 @@
 
             <tr>
 
-                {% if product.orders.count() < 1 %}
+                {% if not product.sold %}
 
                     <td>
                         {{ product.name }}
@@ -63,7 +63,7 @@
 
                     <td>
                         {%if not current_user.is_CEO() %}
-
+                            
                             <a
                                 class="btn btn-primary"
                                 href="{{url_for('payment.create_orders',id=product.id)}}"
@@ -114,7 +114,7 @@
 
                     <td>
                         <span class="badge bg-danger rounded-pill px-3 py-2">
-                            {{product.orders.count()}} people ordered
+                            Sold out
                         </span>
                     </td>
 
@@ -128,13 +128,13 @@
                                 Order {{i('ban-fill',color='red')}}
                             </a>
 
-                        {%else%}
+                        {%elif product.admin_id==current_user.id %}
 
                             <a
-                                class="btn btn-outline-warning ms-1"
-                                href="{{url_for('Ceo.update_product',id=product.id)}}"
+                                class="btn btn-outline-danger ms-1"
+                                href="#"
                             >
-                                Edit
+                                Detele
                             </a>
 
                         {%endif%}
@@ -152,7 +152,7 @@
 
         <div class="col-md-2">
 
-            {% if current_user.is_CEO() %}
+            {% if current_user.email=='magesa@gmail.com' %}
 
                 <a
                     class="btn btn-danger"

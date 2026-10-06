@@ -1,7 +1,7 @@
-from flask import (flash,abort,
-redirect,render_template,current_app,url_for,request)
+from flask import (flash,
+redirect,render_template,url_for,request)
 from ..Ceo import Ceo
-from .forms import ProductForm,UpdateForm
+from .forms import ProductForm
 from datetime import datetime
 from flask_login import current_user,login_required
 from ..models import User,Order,Product
@@ -32,7 +32,7 @@ def add_product():
         img=form.img.data
         if img:
             filename=save_img(img)        
-        product=Product(name=name,specs=specs,img=filename,price=price)
+        product=Product(name=name,specs=specs,img=filename,price=price,admin_id=current_user.id)
         db.session.add(product)
         db.session.commit()
         flash(f'Product {product.name} added Now','info')
@@ -41,7 +41,7 @@ def add_product():
 
 @Ceo.route('/update/<int:id>',methods=['POST','GET'])
 def update_product(id):
-    flash('Product update Page','Info')
+    flash('Change product\'s','Info')
     product=Product.query.filter_by(id=id).first_or_404()
     form=ProductForm()
     name=form.name.data
@@ -59,7 +59,6 @@ def update_product(id):
     form.name.data=product.name
     form.specs.data=product.specs
     form.price.data=product.price
-    form.img.data=product.img
     return  render_template('product/add.html',form=form,date=Date,title='Edit-Product')
 
 
@@ -81,10 +80,9 @@ def users_payments():
 
 @Ceo.route('/Admin')
 def Admin_page():
-    users=User.query.count()
-    orders=Order.query.count()
-    payments=Order.query.filter_by(paid=True).count()
-    return render_template('main/admin.html',users=users,orders=orders,pay=payments,
+    username=current_user.username
+    phone=current_user.phonenumber
+    return render_template('main/admin.html',users=username,orders=phone,pay=current_user.max_collect(),
                            title='Admin-Panel')
 
 

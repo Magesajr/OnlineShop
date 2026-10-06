@@ -3,7 +3,7 @@ from App import db
 import os, secrets as s,time
 import requests as r
 from ..payment import payment
-from App.models import Product,Order
+from App.models import Product,Order,User
 from .forms import BillFillForm
 from flask_login import login_required,current_user
 from flask import ( current_app,session,request,jsonify,
@@ -171,7 +171,7 @@ def lipa_init(order_id):
         phone=form.phone.data
         order=Order.query.filter_by(order_id=order_id).first()
         session['order_id']=order_id
-        amount=str(order.product.price)
+        #amount=str(order.product.price)
 
         body={
             'requestId':f'{uuid.uuid4()}',
@@ -216,6 +216,7 @@ def lipa_query(id):
         flash(f'Payment was SuccessFully check your receipt on your email','success')
         order=Order.query.filter_by(order_id=session['order_id']).first()
         order.paid=True
+        order.product.sold=True
         db.session.commit()
         return redirect(url_for('main.profile'))
     else:
@@ -224,7 +225,8 @@ def lipa_query(id):
 
 
 
-@payment.route('/lipa/withdraw',methods=['POST','GET'])
+@payment.route('/lipa/withdraw/',methods=['POST','GET'])
+@Ceo_required
 def lipa_self():
     form=LipaWithdrawForm()
     if form.validate_on_submit():

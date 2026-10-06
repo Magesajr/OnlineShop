@@ -7,8 +7,7 @@ import os,click,sys
 base=os.path.abspath(os.path.dirname(__name__))
 
 app=create_app('production')
-migrate=Migrate(app,db)
-
+migrate=Migrate(app,db,directory='production_migrations')
 
  
 @app.shell_context_processor

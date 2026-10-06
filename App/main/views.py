@@ -94,7 +94,7 @@ def home():
     pagin=Product.query.paginate(page=page,per_page=4)
     products=pagin.items
     image_url=supabase.storage.from_('onlineshop').get_public_url
-    return render_template('main/home.html',image_url=image_url,
+    return render_template('main/home.html',image_url=image_url,now=Date,
                            products=products,title='HomeStore',pagin=pagin)
 
 

@@ -38,7 +38,7 @@
             <th>payment method</th>
         </tr>
         {% for order in orders %}
-            {%if order.paid == False%}
+            {%if  not order.product.sold %}
                 <tr>
                     <td>{{order.order_id}}</td>
                     <td>{{order.date_ordered.__format__('%b,%d %Y %H:%M:%S %P')}}</td>

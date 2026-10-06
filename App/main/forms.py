@@ -9,12 +9,12 @@ class RegisterForm(FlaskForm):
                                      Length(min=6,max=10,message='username is not less than 6 characters but not more than 10 characters')])
     email=StringField('email',validators=[Email()])
     address=StringField('address',validators=[DataRequired()])
-    phonenumber=StringField('phonenumber',validators=[DataRequired(),Length(min=10,max=15)])
+    phonenumber=StringField('phonenumber',validators=[DataRequired(),Length(min=10,max=12,message="number must be from 10 to 12 characters long")])
     submit=SubmitField('register')
 
     def validate_phonenumber(self,phonenumber):
         if not str(phonenumber.data).startswith('+255') and not str(phonenumber.data).startswith('0'):
-            raise ValidationError('Invalid phonenumber')
+            raise ValidationError('Invalid phonenumber,it should starts with (0) or +255(country code)')
     
     def validate_email(self,email):
         user=User.query.filter_by(email=email.data).first()
@@ -32,15 +32,15 @@ class LoginForm(FlaskForm):
     def validate_email(self,email):
         user=User.query.filter_by(email=email.data).first()
         if not user:
-            raise ValidationError('Invalid Email')
+            raise ValidationError('Sorry this Email is not registered!')
         
 class TokenForm(FlaskForm):
-    email=StringField('email',validators=[DataRequired()],description='enter your email')
+    email=StringField('email',validators=[DataRequired()],description='Enter your email')
     submit=SubmitField('send token')
     
-    # def validate_email(self,email):
-    #     user=User.query.filter_by(email=email.data).first()
-    #     if not user:
-    #         raise ValidationError('Invalid Email')
+    def validate_email(self,email):
+        user=User.query.filter_by(email=email.data).first()
+        if not user:
+            raise ValidationError('Sorry this Email is not Registered!')
         
         

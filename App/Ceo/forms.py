@@ -13,7 +13,8 @@ class ProductForm(FlaskForm):
     name=StringField('Product\'s name',validators=[DataRequired()])
     price=StringField('Price',validators=[DataRequired()])
     specs=TextAreaField('specifications',validators=[DataRequired()])
-    img=FileField('Add product image',validators=[FileAllowed('jpeg png jpg'.split(),'only png jpeg jpg are allowed')])
+    img=FileField('Add product image',
+                  validators=[FileAllowed('jpeg png jpg'.split(),'only png jpeg jpg are allowed')])
     submit=SubmitField('add')
 
 

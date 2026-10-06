@@ -5,13 +5,14 @@ from wtforms.validators import (
     DataRequired,Length,Email,EqualTo,ValidationError,Optional
 )
 from flask_wtf import FlaskForm
+from flask_login import current_user
 
 choices='USD TZS KES'.split()
 
 
 class LipaInitForm(FlaskForm):
-    phone=StringField('phonenumber',validators=[DataRequired('phonenumber needed'),Length(max=12,min=12)],default='255')
-    provider=SelectField('Network',choices='AIRTEL VODACOM YAS HALOTEL'.split())
+    provider=SelectField('choose Network',choices='AIRTEL VODACOM YAS HALOTEL'.split())
+    phone=StringField('phonenumber',validators=[DataRequired('phonenumber needed'),Length(max=12,min=12)],default='255')   
     description=TextAreaField('Description',validators=[Optional()],description='After press pay button confirm payment on your Phone within 30s')
     submit=SubmitField('Pay')
 
@@ -22,16 +23,25 @@ class LipaInitForm(FlaskForm):
 
 
 class LipaWithdrawForm(FlaskForm):
-    amount=StringField('amount',validators=[DataRequired()])
-    phone=StringField('phonenumber',validators=[DataRequired('phonenumber needed'),Length(max=12,min=12)],default='255')
-    provider=SelectField('Network',choices='AIRTEL VODACOM YAS HALOTEL'.split())
-    description=TextAreaField('Description',validators=[Optional()])
+    provider=SelectField('choose Network',choices='AIRTEL VODACOM YAS HALOTEL'.split())
+    amount=StringField('amount to withdraw',validators=[DataRequired()])
+    phone=StringField('phonenumber',validators=[DataRequired('phonenumber needed'),
+                                                Length(max=12,min=12)],default='255',
+                                                description='phonenumber to receive a withdraw')    
+    #description=TextAreaField('Description',validators=[Optional()])
     submit=SubmitField('Withdraw')
 
 
     def validate_phone(self,phone):
         if not phone.data.startswith('255'):
             raise ValidationError('phonumber must starts with 255!')
+    
+    def validate_amount(self,amount):
+        max_collect=current_user.max_collect()-1000
+        if max_collect <= 0:
+            raise ValidationError(f'Zero balance ,Cant withdraw')
+        if not float(amount.data) < max_collect:
+            raise ValidationError(f'Insufficient Balance,Cant Withdraw more than {max_collect}!')
 
 
 

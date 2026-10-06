@@ -2,7 +2,7 @@
 {% block content %}
 <style>
     .card{
-        background-color:green;
+        background-color:#f236;
     }
 </style>
     <div class="container py-4">
@@ -12,7 +12,7 @@
             <div class="col-md-4">
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
-                        <h6 class="text-muted">Users</h6>
+                        <h6 class="text-muted">Name</h6>
                         <h2>{{ users }}</h2>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
             <div class="col-md-4">
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
-                        <h6 class="text-muted">Orders</h6>
+                        <h6 class="text-muted">Phonenumber</h6>
                         <h2>{{ orders }}</h2>
                     </div>
                 </div>
@@ -30,12 +30,19 @@
             <div class="col-md-4">
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
-                        <h6 class="text-muted">Paid Orders</h6>
-                        <h2>{{ pay }}</h2>
+                        <h6 class="text-muted">Collections (tsh)</h6>
+                            <h2>{{ pay }}</h2>
                     </div>
                 </div>
             </div>
         </div>
-        <a class="btn btn-outline-success mt-3" href="{{url_for('Ceo.add_product')}}">add product</a>
+        <div class="row">
+            <div class="col-md-4">
+                <a class="btn btn-outline-success mt-5" href="{{url_for('Ceo.add_product')}}">add product</a>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-outline-warning mt-5" href="{{url_for('payment.lipa_self')}}">Withdraw collections</a>
+            </div>
+        </div>
     </div>
 {% endblock content %}

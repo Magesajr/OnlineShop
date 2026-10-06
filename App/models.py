@@ -21,6 +21,7 @@ class User(UserMixin, db.Model):
     phonenumber=db.Column(db.String(255),unique=True,nullable=False)
     address=db.Column(db.String(255),nullable=False)
     orders=db.relationship('Order',backref='user',lazy='dynamic',cascade='all,delete-orphan')
+    goods=db.relationship('Product',backref='Admin',lazy='dynamic',cascade='all,delete-orphan')
     role_id=db.Column(db.Integer,db.ForeignKey('roles.id'))
 
     def __init__(self,**kwargs):
@@ -43,6 +44,16 @@ name:{self.username}
 email:{self.email}
 address:{self.address}
 '''
+
+    def max_collect(self):
+        if self.is_CEO():
+            products=self.goods.filter_by(sold=True).all()
+            max_total=[]
+            for collect in products:
+                max_total.append(collect.price)
+            return sum(max_total)
+        else:
+            return "only Admins are allowed this functionality"
 
 
 class Unkown(AnonymousUserMixin):
@@ -104,6 +115,9 @@ class Product(db.Model):
     img=db.Column(db.String(255),index=True)
 
     orders=db.relationship('Order',backref='product',lazy='dynamic',cascade='all,delete-orphan')
+    admin_id=db.Column(db.Integer,db.ForeignKey('users.id'))
+
+    
 
     def __repr__(self):
         return f'''Product Details
@@ -111,6 +125,7 @@ name:{self.name}
 specs:{self.specs}
 price:{self.price}
 paid:{self.sold}
+seller_id:{self.admin_id}
 image_file:{self.img}'''
 
 
