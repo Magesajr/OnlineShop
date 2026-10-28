@@ -1,0 +1,30 @@
+{% from 'bootstrap5/form.html' import render_form as R %}
+{% from 'bootstrap5/table.html' import render_table as T %}
+{% from 'bootstrap5/pagination.html' import render_pagination as P %}
+{% from 'bootstrap5/utils.html' import render_messages as M %}
+<html>
+    <title>
+      Mauzo plans  
+    </title>
+{{bootstrap.load_css()}}
+    <body class="align-items-center m-2">
+    <div class="col-md-"> {{M()}}</div>
+    <div class="row">
+        <div class="col-md-4">{{R(form)}}</div>
+        <div class="col-md-6">
+            {{T(table,table_classes='table table-striped')}}
+            {{P(pagin,size='l',align='center')}}
+        </div>          
+    </div>     
+    </body>
+{{bootstrap.load_js()}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script>
+        $(document).ready(function(){
+            $('#datepicker').datepicker({
+                format:'yyyy-mm-dd',
+                autoclose: true
+            });
+        });
+</script>
+</html>
